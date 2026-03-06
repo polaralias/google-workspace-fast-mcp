@@ -12,11 +12,21 @@ FastMCP Python server for Google Workspace, implemented as a parity proxy over `
 ## Configuration
 
 This server forwards through `scripts/google_workspace_stdio_bridge.mjs`, which boots
-the Google Workspace MCP runtime from `../google-workspace-mcp` in stdio mode.
+the Google Workspace MCP runtime.
+
+Legacy backend resolution order:
+
+1. `GOOGLE_WORKSPACE_LEGACY_REPO` (if set)
+2. `../google-workspace-mcp` (sibling repo)
+3. Auto-bootstrap clone into `.vendor/google-workspace-mcp` (default enabled)
 
 - `GOOGLE_WORKSPACE_LEGACY_REPO` (optional): absolute path to `google-workspace-mcp`
+- `GOOGLE_WORKSPACE_AUTO_BOOTSTRAP` (optional, default `true`): disable with `false`
+- `GOOGLE_WORKSPACE_LEGACY_REPO_URL` (optional): override bootstrap git URL
 - `GOOGLE_WORKSPACE_NODE_BIN` / `NODE_BIN` (optional): Node executable
 - All existing `google-workspace-mcp` env vars are passed through to the proxied runtime
+
+Auto-bootstrap requires `git` and `npm` in the runtime image.
 
 API key auth for HTTP transport (required):
 

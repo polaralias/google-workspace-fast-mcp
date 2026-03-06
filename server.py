@@ -2,12 +2,16 @@ from __future__ import annotations
 
 import os
 import secrets
+import shutil
+import subprocess
 from pathlib import Path
 from typing import Iterable
 
 from fastmcp.client.transports import StdioTransport
 from fastmcp.server import create_proxy
 from fastmcp.server.auth import AccessToken, TokenVerifier
+
+DEFAULT_LEGACY_REPO_URL = "https://github.com/polaralias/google-workspace-mcp.git"
 
 
 class StaticApiKeyVerifier(TokenVerifier):
@@ -26,11 +30,73 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parent
 
 
+def _parse_bool(value: str | None, default: bool) -> bool:
+    if value is None:
+        return default
+    normalized = value.strip().lower()
+    if normalized in {"1", "true", "yes", "y", "on"}:
+        return True
+    if normalized in {"0", "false", "no", "n", "off"}:
+        return False
+    return default
+
+
+def _run(command: list[str], cwd: Path) -> None:
+    completed = subprocess.run(command, cwd=str(cwd), capture_output=True, text=True)
+    if completed.returncode != 0:
+        raise RuntimeError(
+            f"Command failed: {' '.join(command)}\n"
+            f"stdout:\n{completed.stdout}\n"
+            f"stderr:\n{completed.stderr}"
+        )
+
+
+def _bootstrap_legacy_repo(target: Path) -> Path:
+    if target.exists():
+        return target
+
+    if not _parse_bool(os.getenv("GOOGLE_WORKSPACE_AUTO_BOOTSTRAP"), True):
+        raise FileNotFoundError(
+            f"Google Workspace legacy repo was not found at {target}. "
+            "Set GOOGLE_WORKSPACE_LEGACY_REPO or enable GOOGLE_WORKSPACE_AUTO_BOOTSTRAP."
+        )
+
+    git_bin = shutil.which("git")
+    npm_bin = shutil.which("npm")
+    if not git_bin or not npm_bin:
+        raise RuntimeError(
+            "Unable to bootstrap google-workspace-mcp automatically because git/npm are unavailable. "
+            "Either install git+npm in the runtime image, or set GOOGLE_WORKSPACE_LEGACY_REPO."
+        )
+
+    target.parent.mkdir(parents=True, exist_ok=True)
+    repo_url = os.getenv("GOOGLE_WORKSPACE_LEGACY_REPO_URL", DEFAULT_LEGACY_REPO_URL).strip() or DEFAULT_LEGACY_REPO_URL
+    _run([git_bin, "clone", "--depth", "1", repo_url, str(target)], cwd=target.parent)
+    _run([npm_bin, "ci", "--omit=dev"], cwd=target)
+
+    entrypoint = target / "dist" / "mcp.js"
+    if not entrypoint.exists():
+        _run([npm_bin, "ci"], cwd=target)
+        _run([npm_bin, "run", "build"], cwd=target)
+    return target
+
+
 def _legacy_root() -> Path:
     override = os.getenv("GOOGLE_WORKSPACE_LEGACY_REPO")
     if override:
-        return Path(override).expanduser().resolve()
-    return (_repo_root().parent / "google-workspace-mcp").resolve()
+        candidate = Path(override).expanduser().resolve()
+        if not candidate.exists():
+            raise FileNotFoundError(
+                f"GOOGLE_WORKSPACE_LEGACY_REPO is set but does not exist: {candidate}"
+            )
+        return candidate
+
+    sibling = (_repo_root().parent / "google-workspace-mcp").resolve()
+    if sibling.exists():
+        return sibling
+
+    vendored = (_repo_root() / ".vendor" / "google-workspace-mcp").resolve()
+    return _bootstrap_legacy_repo(vendored)
 
 
 def _load_api_keys() -> list[str]:
