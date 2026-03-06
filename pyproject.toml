@@ -1,11 +1,14 @@
 [project]
 name = "google-workspace-fast-mcp"
 version = "0.1.0"
-description = "FastMCP Python proxy for google-workspace-mcp"
+description = "Native FastMCP server for Google Workspace"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-  "fastmcp>=3.1.0"
+  "cryptography>=44.0.0",
+  "fastmcp>=3.1.0",
+  "google-api-python-client>=2.170.0",
+  "google-auth>=2.34.0"
 ]
 
 [project.scripts]

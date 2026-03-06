@@ -1,0 +1,1349 @@
+{
+  "tools": [
+    {
+      "name": "list_users",
+      "description": "List users in the domain.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "domain": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "page_size": {
+            "default": 100,
+            "type": "number"
+          },
+          "page_token": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "get_user",
+      "description": "Get details of a specific user.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "user_key": {
+            "type": "string",
+            "description": "Primary email or unique ID"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "user_key"
+        ]
+      }
+    },
+    {
+      "name": "create_user",
+      "description": "Create a new user.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "primary_email": {
+            "type": "string"
+          },
+          "given_name": {
+            "type": "string"
+          },
+          "family_name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "org_unit_path": {
+            "default": "/",
+            "type": "string"
+          },
+          "change_password_next_login": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "primary_email",
+          "given_name",
+          "family_name",
+          "password"
+        ]
+      }
+    },
+    {
+      "name": "list_groups",
+      "description": "List groups in the domain.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "user_key": {
+            "type": "string"
+          },
+          "page_size": {
+            "default": 100,
+            "type": "number"
+          },
+          "page_token": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "list_admin_activities",
+      "description": "List activities from Admin SDK Reports API.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "application_name": {
+            "type": "string",
+            "description": "e.g. admin, calendar, drive, login, mobile, token, groups, saml, chat, gcp, rules, meet, user_accounts"
+          },
+          "user_key": {
+            "default": "all",
+            "type": "string"
+          },
+          "start_time": {
+            "type": "string"
+          },
+          "end_time": {
+            "type": "string"
+          },
+          "event_name": {
+            "type": "string"
+          },
+          "page_size": {
+            "default": 100,
+            "type": "number"
+          },
+          "page_token": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "application_name"
+        ]
+      }
+    },
+    {
+      "name": "list_calendars",
+      "description": "Retrieves a list of calendars accessible to the authenticated user.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "page_size": {
+            "default": 100,
+            "description": "The maximum number of calendars to return.",
+            "type": "number"
+          },
+          "page_token": {
+            "description": "Token for retrieving the next page of results.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "get_events",
+      "description": "Retrieves events from a specified Google Calendar.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "calendar_id": {
+            "default": "primary",
+            "description": "The ID of the calendar to query.",
+            "type": "string"
+          },
+          "event_id": {
+            "description": "The ID of a specific event to retrieve.",
+            "type": "string"
+          },
+          "time_min": {
+            "description": "The start of the time range (inclusive) in RFC3339 format.",
+            "type": "string"
+          },
+          "time_max": {
+            "description": "The end of the time range (exclusive) in RFC3339 format.",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 25,
+            "description": "Max events to return.",
+            "type": "number"
+          },
+          "page_token": {
+            "type": "string"
+          },
+          "query": {
+            "description": "Text search query.",
+            "type": "string"
+          },
+          "detailed": {
+            "default": false,
+            "description": "Return detailed info.",
+            "type": "boolean"
+          },
+          "include_attachments": {
+            "default": false,
+            "description": "Include attachments in detailed output.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "create_event",
+      "description": "Creates a new event.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "summary": {
+            "type": "string",
+            "description": "Event title."
+          },
+          "start_time": {
+            "type": "string",
+            "description": "Start time (RFC3339)."
+          },
+          "end_time": {
+            "type": "string",
+            "description": "End time (RFC3339)."
+          },
+          "calendar_id": {
+            "default": "primary",
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "attendees": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "add_google_meet": {
+            "default": false,
+            "type": "boolean"
+          },
+          "reminders": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {}
+              }
+            ]
+          },
+          "use_default_reminders": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "summary",
+          "start_time",
+          "end_time"
+        ]
+      }
+    },
+    {
+      "name": "delete_event",
+      "description": "Deletes an existing event.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "event_id": {
+            "type": "string"
+          },
+          "calendar_id": {
+            "default": "primary",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "event_id"
+        ]
+      }
+    },
+    {
+      "name": "list_spaces",
+      "description": "Lists Google Chat spaces.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "page_size": {
+            "default": 100,
+            "type": "number"
+          },
+          "space_type": {
+            "default": "all",
+            "type": "string",
+            "enum": [
+              "all",
+              "room",
+              "dm"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "create_space",
+      "description": "Creates a new Chat space.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "space_type": {
+            "default": "SPACE",
+            "type": "string",
+            "enum": [
+              "SPACE",
+              "GROUP_CHAT"
+            ]
+          },
+          "external_user_allowed": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "display_name"
+        ]
+      }
+    },
+    {
+      "name": "list_members",
+      "description": "List members of a space.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "space_id": {
+            "type": "string"
+          },
+          "page_size": {
+            "default": 100,
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "space_id"
+        ]
+      }
+    },
+    {
+      "name": "add_member",
+      "description": "Adds a member to a space.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "space_id": {
+            "type": "string"
+          },
+          "member_name": {
+            "type": "string",
+            "description": "Resource name like users/12345 or users/email@example.com"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "space_id",
+          "member_name"
+        ]
+      }
+    },
+    {
+      "name": "remove_member",
+      "description": "Remove a member from a space.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "space_id": {
+            "type": "string"
+          },
+          "member_name": {
+            "type": "string",
+            "description": "Resource name of membership, e.g. spaces/X/members/Y"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "space_id",
+          "member_name"
+        ]
+      }
+    },
+    {
+      "name": "get_messages",
+      "description": "Get messages from a space.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "space_id": {
+            "type": "string"
+          },
+          "page_size": {
+            "default": 50,
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "space_id"
+        ]
+      }
+    },
+    {
+      "name": "send_message",
+      "description": "Send a message to a space.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "space_id": {
+            "type": "string"
+          },
+          "message_text": {
+            "type": "string"
+          },
+          "thread_key": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "space_id",
+          "message_text"
+        ]
+      }
+    },
+    {
+      "name": "create_doc",
+      "description": "Creates a new Google Doc.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "title": {
+            "type": "string",
+            "description": "Document title."
+          },
+          "content": {
+            "description": "Initial content.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "title"
+        ]
+      }
+    },
+    {
+      "name": "get_doc_content",
+      "description": "Retrieves content of a Google Doc.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "document_id": {
+            "type": "string",
+            "description": "Document ID."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "document_id"
+        ]
+      }
+    },
+    {
+      "name": "modify_doc_text",
+      "description": "Inserts or replaces text in a Google Doc.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "document_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "index": {
+            "default": 1,
+            "type": "number"
+          },
+          "start_index": {
+            "type": "number"
+          },
+          "end_index": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "document_id",
+          "text"
+        ]
+      }
+    },
+    {
+      "name": "search_drive_files",
+      "description": "Searches for files and folders within a user's Google Drive.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "query": {
+            "type": "string",
+            "description": "The search query string."
+          },
+          "page_size": {
+            "default": 10,
+            "description": "Max files to return.",
+            "type": "number"
+          },
+          "page_token": {
+            "type": "string"
+          },
+          "drive_id": {
+            "type": "string"
+          },
+          "include_items_from_all_drives": {
+            "default": true,
+            "type": "boolean"
+          },
+          "corpora": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "query"
+        ]
+      }
+    },
+    {
+      "name": "list_drive_items",
+      "description": "Lists files and folders, supporting shared drives.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "folder_id": {
+            "default": "root",
+            "type": "string"
+          },
+          "page_size": {
+            "default": 100,
+            "type": "number"
+          },
+          "page_token": {
+            "type": "string"
+          },
+          "drive_id": {
+            "type": "string"
+          },
+          "include_items_from_all_drives": {
+            "default": true,
+            "type": "boolean"
+          },
+          "corpora": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "get_drive_file_content",
+      "description": "Retrieves the content of a specific Google Drive file.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "file_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "file_id"
+        ]
+      }
+    },
+    {
+      "name": "create_drive_file",
+      "description": "Creates a new file in Google Drive.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "folder_id": {
+            "default": "root",
+            "type": "string"
+          },
+          "mime_type": {
+            "default": "text/plain",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "file_name"
+        ]
+      }
+    },
+    {
+      "name": "get_drive_file_permissions",
+      "description": "Gets detailed metadata including permissions.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "file_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "file_id"
+        ]
+      }
+    },
+    {
+      "name": "search_gmail_messages",
+      "description": "Searches messages in a user's Gmail account based on a query.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The search query. Supports standard Gmail search operators."
+          },
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "page_size": {
+            "default": 10,
+            "description": "The maximum number of messages to return.",
+            "type": "number"
+          },
+          "page_token": {
+            "description": "Token for retrieving the next page of results.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "query",
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "get_gmail_message_content",
+      "description": "Retrieves the full content of a specific Gmail message.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string",
+            "description": "The unique ID of the Gmail message to retrieve."
+          },
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "message_id",
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "get_gmail_messages_content_batch",
+      "description": "Retrieves content of multiple Gmail messages.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "message_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of Gmail message IDs to retrieve (max 25)."
+          },
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "format": {
+            "default": "full",
+            "description": "Message format.",
+            "type": "string",
+            "enum": [
+              "full",
+              "metadata"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "message_ids",
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "get_gmail_attachment_content",
+      "description": "Downloads the content of a specific email attachment.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "string"
+          },
+          "attachment_id": {
+            "type": "string"
+          },
+          "user_google_email": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "message_id",
+          "attachment_id",
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "list_spreadsheets",
+      "description": "Lists spreadsheets from Google Drive.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "page_size": {
+            "default": 25,
+            "description": "Max spreadsheets to return.",
+            "type": "number"
+          },
+          "page_token": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "get_spreadsheet_info",
+      "description": "Gets information about a specific spreadsheet.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "spreadsheet_id": {
+            "type": "string",
+            "description": "The ID of the spreadsheet."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "spreadsheet_id"
+        ]
+      }
+    },
+    {
+      "name": "read_sheet_values",
+      "description": "Reads values from a specific range in a Google Sheet.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "spreadsheet_id": {
+            "type": "string"
+          },
+          "range_name": {
+            "default": "A1:Z1000",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "spreadsheet_id"
+        ]
+      }
+    },
+    {
+      "name": "modify_sheet_values",
+      "description": "Modifies values in a specific range of a Google Sheet.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "spreadsheet_id": {
+            "type": "string"
+          },
+          "range_name": {
+            "type": "string"
+          },
+          "values": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {}
+                }
+              }
+            ]
+          },
+          "value_input_option": {
+            "default": "USER_ENTERED",
+            "type": "string",
+            "enum": [
+              "RAW",
+              "USER_ENTERED"
+            ]
+          },
+          "clear_values": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "spreadsheet_id",
+          "range_name"
+        ]
+      }
+    },
+    {
+      "name": "create_presentation",
+      "description": "Creates a new Google Slide presentation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "title": {
+            "default": "Untitled Presentation",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "get_presentation",
+      "description": "Gets details about a presentation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "presentation_id": {
+            "type": "string",
+            "description": "The ID of the presentation."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "presentation_id"
+        ]
+      }
+    },
+    {
+      "name": "create_slide",
+      "description": "Creates a new slide.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "presentation_id": {
+            "type": "string"
+          },
+          "layout": {
+            "default": "TITLE_AND_BODY",
+            "type": "string"
+          },
+          "insertion_index": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "presentation_id"
+        ]
+      }
+    },
+    {
+      "name": "add_textbox",
+      "description": "Adds a textbox to a slide.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "presentation_id": {
+            "type": "string"
+          },
+          "page_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "presentation_id",
+          "page_id",
+          "text",
+          "x",
+          "y",
+          "width",
+          "height"
+        ]
+      }
+    },
+    {
+      "name": "list_task_lists",
+      "description": "List all task lists.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string",
+            "description": "The user's Google email address. Required."
+          },
+          "max_results": {
+            "default": 100,
+            "type": "number"
+          },
+          "page_token": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email"
+        ]
+      }
+    },
+    {
+      "name": "create_task_list",
+      "description": "Create a new task list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "title"
+        ]
+      }
+    },
+    {
+      "name": "delete_task_list",
+      "description": "Delete a task list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "task_list_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "task_list_id"
+        ]
+      }
+    },
+    {
+      "name": "list_tasks",
+      "description": "List tasks in a task list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "task_list_id": {
+            "type": "string"
+          },
+          "max_results": {
+            "default": 20,
+            "type": "number"
+          },
+          "page_token": {
+            "type": "string"
+          },
+          "show_completed": {
+            "default": true,
+            "type": "boolean"
+          },
+          "show_deleted": {
+            "default": false,
+            "type": "boolean"
+          },
+          "show_hidden": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "task_list_id"
+        ]
+      }
+    },
+    {
+      "name": "create_task",
+      "description": "Create a new task.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "task_list_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "due": {
+            "description": "RFC 3339 format",
+            "type": "string"
+          },
+          "parent": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "task_list_id",
+          "title"
+        ]
+      }
+    },
+    {
+      "name": "update_task",
+      "description": "Update a task.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "task_list_id": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "needsAction",
+              "completed"
+            ]
+          },
+          "due": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "task_list_id",
+          "task_id"
+        ]
+      }
+    },
+    {
+      "name": "delete_task",
+      "description": "Delete a task.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "task_list_id": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "task_list_id",
+          "task_id"
+        ]
+      }
+    },
+    {
+      "name": "complete_task",
+      "description": "Mark a task as completed.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "task_list_id": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "task_list_id",
+          "task_id"
+        ]
+      }
+    },
+    {
+      "name": "clear_completed_tasks",
+      "description": "Clear completed tasks from a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_google_email": {
+            "type": "string"
+          },
+          "task_list_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_google_email",
+          "task_list_id"
+        ]
+      }
+    }
+  ]
+}

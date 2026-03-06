@@ -1,45 +1,46 @@
 # google-workspace-fast-mcp
 
-FastMCP Python server for Google Workspace, implemented as a parity proxy over `google-workspace-mcp`.
+Native Python/FastMCP implementation of the Google Workspace MCP server.
 
-## What is migrated
+## Runtime model
 
-- Full Google Workspace MCP tool surface from `google-workspace-mcp`
-- Existing Google connector/config env model via legacy runtime passthrough
-- OAuth consent/UI routes are not exposed by this FastMCP server
-- HTTP transport is API-key based
+- Tool surface is loaded from `tool_manifest_google.json` (parity names + input schemas)
+- Tool execution is handled directly in Python via Google APIs
+- Credential files are read from `GOOGLE_MCP_CREDENTIALS_DIR` or `~/.google_workspace_mcp/credentials`
+- Supports legacy encrypted credential payloads (`MASTER_KEY`) from the upstream runtime
 
-## Configuration
+## Project configuration (`fastmcp.json`)
 
-This server forwards through `scripts/google_workspace_stdio_bridge.mjs`, which boots
-the Google Workspace MCP runtime.
+This repository now includes a canonical `fastmcp.json` aligned with FastMCP project configuration docs:
 
-Legacy backend resolution order:
+- `source`: `server.py:mcp`
+- `environment`: uv-managed Python environment from local `pyproject.toml`
+- `deployment`: HTTP runtime defaults (`/mcp`) plus runtime env wiring
 
-1. `GOOGLE_WORKSPACE_LEGACY_REPO` (if set)
-2. `../google-workspace-mcp` (sibling repo)
-3. Auto-bootstrap clone into `.vendor/google-workspace-mcp` (default enabled)
+FastMCP CLI arguments still override config values when needed.
 
-- `GOOGLE_WORKSPACE_LEGACY_REPO` (optional): absolute path to `google-workspace-mcp`
-- `GOOGLE_WORKSPACE_AUTO_BOOTSTRAP` (optional, default `true`): disable with `false`
-- `GOOGLE_WORKSPACE_LEGACY_REPO_URL` (optional): override bootstrap git URL
-- `GOOGLE_WORKSPACE_NODE_BIN` / `NODE_BIN` (optional): Node executable
-- All existing `google-workspace-mcp` env vars are passed through to the proxied runtime
+## Runtime env
 
-Auto-bootstrap requires `git` and `npm` in the runtime image.
+- Required:
+  - Valid per-user credential files for tool calls (`user_google_email` argument)
+  - `MASTER_KEY` when credential files are stored in legacy encrypted format
 
-API key auth for HTTP transport (required):
+- Optional:
+  - `GOOGLE_WORKSPACE_MCP_API_KEY` / `MCP_API_KEY` / `MCP_API_KEYS` for HTTP bearer auth
+  - `GOOGLE_MCP_CREDENTIALS_DIR` custom credential path
+  - `GOOGLE_OAUTH_CLIENT_ID` / `GOOGLE_OAUTH_CLIENT_SECRET` fallback OAuth client settings
+  - `BASE_URL` (if needed for token verifier metadata)
 
-- `GOOGLE_WORKSPACE_MCP_API_KEY` (preferred), or
-- `MCP_API_KEY`, or
-- `MCP_API_KEYS` (comma-separated)
-
-## Run
+## Validate and run
 
 ```bash
-# HTTP (requires API key env)
-python server.py
+# Validate tool discovery / entrypoint
+fastmcp inspect fastmcp.json
+fastmcp inspect server.py:mcp
 
-# stdio (no HTTP auth layer)
-FASTMCP_TRANSPORT=stdio python server.py
+# Run from project config
+fastmcp run
+
+# Override transport at runtime
+fastmcp run --transport stdio
 ```
