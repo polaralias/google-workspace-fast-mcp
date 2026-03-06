@@ -1,0 +1,16 @@
+[project]
+name = "google-workspace-fast-mcp"
+version = "0.1.0"
+description = "FastMCP Python proxy for google-workspace-mcp"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastmcp>=3.1.0"
+]
+
+[project.scripts]
+google-workspace-fast-mcp = "server:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
